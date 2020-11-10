@@ -29,6 +29,8 @@ def main() -> None:
 
       context.present(root_console)
 
+      root_console.clear()
+
       for event in tcod.event.wait():
         action = event_handler.dispatch(event)
 
