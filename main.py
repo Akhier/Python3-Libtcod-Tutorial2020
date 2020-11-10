@@ -27,7 +27,7 @@ def main() -> None:
   ) as context:
     root_console = tcod.Console(screen_width, screen_height, order="F")
     while True:
-      root_console.print(x=player_x, y=player_y, string="@")
+      root_console.print(x=player.x, y=player.y, string=player.char, fg=player.color)
 
       context.present(root_console)
 
