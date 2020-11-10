@@ -32,7 +32,7 @@ def main() -> None:
       for event in tcod.event.wait():
         action = event_handler.dispatch(event)
 
-        if action = None:
+        if action is None:
           continue
 
         if isinstance(action, MovementAction):
