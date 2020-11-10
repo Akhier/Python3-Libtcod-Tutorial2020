@@ -40,8 +40,7 @@ def main() -> None:
           continue
 
         if isinstance(action, MovementAction):
-          player_x += action.dx
-          player_y += action.dy
+          player.move(dx=action.dx, dy=action.dy)
 
         elif isinstance(action, EscapeAction):
           raise SystemExit()
