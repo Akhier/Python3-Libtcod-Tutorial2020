@@ -1,3 +1,4 @@
+import random
 from typing import Iterator, Tuple
 
 import tcod
