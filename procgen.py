@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import random
 from typing import Iterator, Tuple
 
@@ -25,6 +27,16 @@ class RectangularRoom:
   def inner(self) -> Tuple[slice, slice]:
     """Return the inner area of this room as a 2D array index."""
     return slice(self.x1 + 1, self.x2), slice(self.y1 + 1, self.y2)
+
+  def intersects(self, other: RectangularRoom) -> bool:
+    """Return True if this room overlaps with another RectangularRoom."""
+    return (
+      self.x1 <= other.x2
+      and self.x2 >= other.x1
+      and self.y1 <= other.y2
+      and self.y2 >= other.y1
+    )
+
 
 def tunnel_between(
   start: Tuple[int, int], end:Tuple[int, int]
