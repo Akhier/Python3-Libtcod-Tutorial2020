@@ -38,10 +38,6 @@ class Engine:
   def render(self, console: Console, context: Context) -> None:
     self.game_map.render(console)
 
-    for entity in self.entities:
-      if self.game_map.visible[entity.x, entity.y]:
-        console.print(entity.x, entity.y, entity.char, fg=entity.color)
-
     context.present(console)
 
     console.clear()
