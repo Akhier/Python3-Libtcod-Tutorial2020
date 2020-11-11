@@ -14,16 +14,24 @@ class Action:
     This method must be overridden by Action subclasses."""
     raise NotImplementedError()
 
+
 class EscapeAction(Action):
   def perform(self, engine: Engine, entity: Entity) -> None:
     raise SystemExit()
 
-class MovementAction(Action):
+
+class ActionWithDirection(Action):
   def __init__(self, dx: int, dy: int):
     super().__init__()
 
     self.dx = dx
     self.dy = dy
+
+  def perform(self, engine: Engine, entity: Entity) -> None:
+    raise NotImplementedError
+
+
+class MovementAction(ActionWithDirection):
 
   def perform(self, engine: Engine, entity: Entity) -> None:
     dest_x = entity.x + self.dx
@@ -32,5 +40,7 @@ class MovementAction(Action):
       return # Destination is out of bounds
     if not engine.game_map.tiles["walkable"][dest_x, dest_y]:
       return # Destination is blocked by a tile
+    if engine.game_map.get_blocking_entity_at_location(dest_x, dest_y):
+      return
 
     entity.move(self.dx, self.dy)
