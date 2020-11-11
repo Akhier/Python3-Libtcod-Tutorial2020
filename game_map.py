@@ -16,4 +16,13 @@ class GameMap:
     return 0 <= x < self.width and 0 <= y < self.height
 
   def render(self, console: Console) -> None:
-    console.tiles_rgb[0:self.width, 0:self.height] = self.tiles["dark"]
+    """ Renders the map.
+
+    If a tile is in the "visible" array, then draw it with the "light" colors.
+    If it isn't, but it's in the "explored" array, then draw it with the "dark" colors.
+    Otherwise, the default is "SHROUD". """
+    console.tiles_rgb[0:self.width, 0:self.height] = np.select(
+      condlist=[self.visible, self.explored],
+      choicelist=[self.tiles["light"], self.tiles["dark"]],
+      default=tile_types.SHROUD
+    )
