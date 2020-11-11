@@ -94,6 +94,8 @@ def generate_dungeon(
       for x, y in tunnel_between(rooms[-1].center, new_room.center):
         dungeon.tiles[x, y] = tile_types.floor
 
+    place_entities(new_room, dungeon, max_monsters_per_room)
+
     rooms.append(new_room)
 
   return dungeon
