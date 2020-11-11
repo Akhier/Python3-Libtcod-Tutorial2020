@@ -41,6 +41,21 @@ class RectangularRoom:
     )
 
 
+def place_entities(
+  room: RectangularRoom, dungeon: GameMap, maximum_monsters: int
+) -> None:
+  number_of_monsters = random.randint(0, maximum_monsters)
+
+  for i in range(number_of_monsters):
+    x = random.randint(room.x1 + 1, room.x2 - 1)
+    y = random.randint(room.y1 + 1, room.y2 - 1)
+
+    if not any(entity.x == x and entity.y == y for entity in dungeon.entities):
+      if random.random() < 0.8:
+        pass # TODO: Place orc here
+      else:
+        pass # TODO: Place troll here
+
 def tunnel_between(
   start: Tuple[int, int], end:Tuple[int, int]
 ) -> Iterator[Tuple[int, int]]:
