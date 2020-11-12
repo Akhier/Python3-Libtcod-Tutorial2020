@@ -43,7 +43,6 @@ class MeleeAction(ActionWithDirection):
 
 
 class MovementAction(ActionWithDirection):
-
   def perform(self, engine: Engine, entity: Entity) -> None:
     dest_x = entity.x + self.dx
     dest_y = entity.y + self.dy
@@ -55,3 +54,14 @@ class MovementAction(ActionWithDirection):
       return
 
     entity.move(self.dx, self.dy)
+
+class BumpAction(ActionWithDirection):
+  def perform(self, engine: Engine, entity: Entity) -> None:
+    dest_x = entity.x + self.dx
+    dest_y = entity.y + self.dy
+
+    if engine.game_map.get_blocking_entity_at_location(dest_x, dest_y):
+      return MeleeAction(self.dx, self.dy).perform(engine, entity)
+
+    else:
+      return MovementAction(self.dx, self.dy).perform(engine, entity)
