@@ -29,7 +29,7 @@ class BaseAI(Action, BaseComponent):
 
     pathfinder.add_root((self.entity.x, self.entity.y))
 
-    path: List[List[int]] = pathfinder.path_to((dest_x, dest_y))
+    path: List[List[int]] = pathfinder.path_to((dest_x, dest_y))[1:].tolist()
 
     return [(index[0], index[1]) for index in path]
 
