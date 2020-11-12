@@ -14,7 +14,7 @@ class Entity:
 
   def __init__(
     self,
-    gamemap: Optional[GameMap] = None
+    gamemap: Optional[GameMap] = None,
     x: int = 0,
     y: int = 0,
     char: str = "?",

@@ -36,7 +36,6 @@ def main() -> None:
     max_monsters_per_room=max_monsters_per_room,
     engine=engine
   )
-
   engine.update_fov()
 
   with tcod.context.new_terminal(
