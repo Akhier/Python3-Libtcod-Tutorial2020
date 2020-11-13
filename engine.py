@@ -21,6 +21,7 @@ class Engine:
   def __init__(self, player: Actor):
     self.event_handler: EventHandler = MainGameEventHandler(self)
     self.message_log = MessageLog()
+    self.mouse_location = (0, 0)
     self.player = player
 
   def handle_enemy_turns(self) -> None:
