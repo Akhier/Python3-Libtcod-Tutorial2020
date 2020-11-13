@@ -1,4 +1,5 @@
 import copy
+import traceback
 
 import tcod
 
@@ -56,7 +57,13 @@ def main() -> None:
       engine.event_handler.on_render(console=root_console)
       context.present(root_console)
 
-      engine.event_handler.handle_events(context)
+      try:
+        for event in tcod.event.wait():
+          context.convert_event(event)
+          engine.event_handler.handle_events(event)
+      except Exception: # Handle exceptions in game
+        traceback.print_exc() # Print error to stderr
+        engine.message_log.add_message(traceback.format_exc(), color.error)
 
 if __name__ == "__main__":
   main()
