@@ -88,6 +88,35 @@ class EventHandler(tcod.event.EventDispatch[Action]):
     self.engine.render(console)
 
 
+class AskUserEventHandler(EventHandler):
+  """Handles user input for actions which require special input"""
+
+  def handle_action(self, action: Optional[Action]) -> bool:
+    if super().handle_action(action):
+      self.engine.event_handler = MainGameEventHandler(self.engine)
+      return True
+    return False
+
+  def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
+    if event.sym in {
+      tcod.event.K_LSHIFT,
+      tcod.event.K_RSHIFT,
+      tcod.event.K_LCTRL,
+      tcod.event.K_RCTRL,
+      tcod.event.K_LALT,
+      tcod.event.K_RALT
+    }:
+      return None
+    return self.on_exit()
+
+  def ev_mousebuttondown(self, event: tcod.event.MouseButtonDown) -> Optional[Action]:
+    return self.on_exit()
+
+  def on_exit(self) -> Optional[Action]:
+    self.engine.event_handler = MainGameEventHandler(self.engine)
+    return None
+
+
 class MainGameEventHandler(EventHandler):
   def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
     action: Optional[Action] = None
