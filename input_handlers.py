@@ -4,6 +4,7 @@ from typing import Optional, TYPE_CHECKING
 
 import tcod
 
+import actions
 from actions import (
   Action,
   BumpAction,
@@ -173,6 +174,20 @@ class InventoryEventHandler(AskUserEventHandler):
 
   def on_item_selected(self, item: Item) -> Optional[Action]:
     raise NotImplementedError()
+
+
+class InventoryActivateHandler(InventoryEventHandler):
+  TITLE = "Select an item to use"
+
+  def on_item_selected(self, item: Item) -> Optional[Action]:
+    return item.consumable.get_action(self.engine.player)
+
+
+class InventoryDropHandler(InventoryEventHandler):
+  TITLE = "Select an item to drop"
+
+  def on_item_selected(self, item: Item) -> Optional[Action]:
+    return actions.DropItem(self.engine.player, item)
 
 
 class MainGameEventHandler(EventHandler):
