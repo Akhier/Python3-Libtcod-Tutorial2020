@@ -108,7 +108,7 @@ class Item(Entity):
     char: str = "?",
     color: Tuple[int, int, int] = (255, 255, 255),
     name: str = "<Unnamed>",
-    consumable = Consumable
+    consumable: Consumable
   ):
     super().__init__(
       x=x,
