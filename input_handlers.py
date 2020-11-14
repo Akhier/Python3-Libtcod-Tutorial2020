@@ -212,6 +212,11 @@ class MainGameEventHandler(EventHandler):
     elif key == tcod.event.K_g:
       action = PickupAction(player)
 
+    elif key == tcod.event.K_i:
+      self.engine.event_handler = InventoryActivateHandler(self.engine)
+    elif key == tcod.event.K_d:
+      self.engine.event_handler = InventoryDropHandler(self.engine)
+
     # No valid key was pressed
     return action
 
