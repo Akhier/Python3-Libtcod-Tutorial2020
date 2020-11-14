@@ -16,6 +16,7 @@ import exceptions
 
 if TYPE_CHECKING:
   from engine import Engine
+  from entity import Item
 
 
 MOVE_KEYS = {
@@ -115,6 +116,63 @@ class AskUserEventHandler(EventHandler):
   def on_exit(self) -> Optional[Action]:
     self.engine.event_handler = MainGameEventHandler(self.engine)
     return None
+
+
+class InventoryEventHandler(AskUserEventHandler):
+  TITLE = "<missing title>"
+
+  def on_render(self, console: tcod.Console) -> None:
+    super().on_render(console)
+    number_of_items_in_inventory = len(self.engine.player.inventory.items)
+
+    height = number_of_items_in_inventory + 2
+
+    if height <= 3:
+      height = 3
+
+    if self.engine.player.x <= 30:
+      x = 40
+    else:
+      x = 0
+
+    y = 0
+
+    width = len(self.TITLE) + 4
+
+    console.draw_frame(
+      x=x,
+      y=y,
+      width=width,
+      height=height,
+      title=self.TITLE,
+      clear=True,
+      fg=(255, 255, 255),
+      bg=(0, 0, 0)
+    )
+
+    if number_of_items_in_inventory > 0:
+      for i, item in enumerate(self.engine.player.inventory.items):
+        item_key = chr(ord("a") + i)
+        console.print(x + 1, y + i + 1, f"({item_key}) {item.name}")
+    else:
+      console.print(x + 1, y + 1, "(Empty)")
+
+  def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
+    player = self.engine.player
+    key = event.sym
+    index = key - tcod.event.K_a
+
+    if 0 <= index <= 26:
+      try:
+        selected_item = player.inventory.items[index]
+      except IndexError:
+        self.engine.message_log.add_message("Invalid entry.", color.invalid)
+        return None
+      return self.on_item_selected(selected_item)
+    return super().ev_keydown(event)
+
+  def on_item_selected(self, item: Item) -> Optional[Action]:
+    raise NotImplementedError()
 
 
 class MainGameEventHandler(EventHandler):
