@@ -246,7 +246,7 @@ class LookHandler(SelectIndexHandler):
 
 class SingleRangedAttackHandler(SelectIndexHandler):
   def __init__(
-    self, engine: Engine, callback, Callable[[Tuple[int, int, int]], Optional[Action]]
+    self, engine: Engine, callback: Callable[[Tuple[int, int, int]], Optional[Action]]
   ):
     super().__init__(engine)
 
