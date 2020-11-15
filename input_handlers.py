@@ -55,6 +55,11 @@ WAIT_KEYS = {
   tcod.event.K_CLEAR
 }
 
+CONFIRM_KEYS = {
+  tcod.event.K_RETURN,
+  tcod.event.K_KP_ENTER
+}
+
 
 class EventHandler(tcod.event.EventDispatch[Action]):
   def __init__(self, engine:Engine):
@@ -187,6 +192,56 @@ class InventoryDropHandler(InventoryEventHandler):
 
   def on_item_selected(self, item: Item) -> Optional[Action]:
     return actions.DropItem(self.engine.player, item)
+
+
+class SelectIndexHandler(AskUserEventHandler):
+  def __init__(self, engine: Engine):
+    super().__init__(engine)
+    player = self.engine.player
+    engine.mouse_location = player.x, player.y
+
+  def on_render(self, console: tcod.Console) -> None:
+    super().on_render(console)
+    x, y = self.engine.mouse_location
+    console.tiles_rgb["bg"][x, y] = color.white
+    console.tiles_rgb["fg"][x, y] = color.black
+
+  def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
+    key = event.sym
+    if key in MOVE_KEYS:
+      modifier = 1
+      if event.mod & (tcod.event.KMOD_LSHIFT | tcod.event.KMOD_RSHIFT):
+        modifier *= 5
+      if event.mod & (tcod.event.KMOD_LCTRL | tcod.event.KMOD_RCTRL):
+        modifier *= 10
+      if event.mod & (tcod.event.KMOD_LALT | tcod.event.KMOD_RALT):
+        modifier *= 20
+
+      x, y = self.engine.mouse_location
+      dx, dy = MOVE_KEYS[key]
+      x += dx * modifier
+      y += dy * modifier
+      x = max(0, min(x, self.engine.game_map.width - 1))
+      y = max(0, min(y, self.engine.game_map.height - 1))
+      self.engine.mouse_location = x, y
+      return None
+    elif key in CONFIRM_KEYS:
+      return self.on_index_selected(*self.engine.mouse_location)
+    return super().ev_keydown(event)
+
+  def ev_mousebuttondown(self, event: tcod.event.MouseButtonDown) -> Optional[Action]:
+    if self.engine.game_map.in_bounds(*event.tile):
+      if event.button == 1:
+         return self.on_index_selected(*event.tile)
+    return super().ev_mousebuttondown(event)
+
+  def on_index_selected(self, x: int, y: int) -> Optional[Action]:
+    raise NotImplementedError()
+
+
+class LookHandler(SelectIndexHandler):
+  def on_index_selected(self, x: int, y: int) -> None:
+    self.engine.event_handler = MainGameEventHandler(self.engine)
 
 
 class MainGameEventHandler(EventHandler):
