@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+
 from typing import Callable, Optional, Tuple, TYPE_CHECKING, Union
 
 import tcod
@@ -368,9 +370,17 @@ class MainGameEventHandler(EventHandler):
 
 
 class GameOverEventHandler(EventHandler):
+  def on_quit(self) -> None:
+    if os.path.exists("savegame.sav"):
+      os.remove("savegame.sav")
+    raise exceptions.QuitWithoutSaving()
+
+  def ev_quit(self, event: tcod.event.Quit) -> None:
+    self.on_quit()
+
   def ev_keydown(self, event: tcod.event.KeyDown) -> None:
     if event.sym == tcod.event.K_ESCAPE:
-      raise SystemExit()
+      self.on_quit()
 
 
 CURSOR_Y_KEYS = {
