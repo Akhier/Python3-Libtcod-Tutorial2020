@@ -46,7 +46,7 @@ def get_max_value_for_floor(
 ) -> int:
   current_value = 0
 
-  for floor_minimum > floor:
+  if floor_minimum > floor:
     break
   else:
     current_value = value
