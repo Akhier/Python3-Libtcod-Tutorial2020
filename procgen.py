@@ -112,6 +112,13 @@ class RectangularRoom:
 
 
 def place_entities(room: RectangularRoom, dungeon: GameMap, floor_number: int) -> None:
+  number_of_monsters = random.randint(
+      0, get_weight_for_floor(max_monsters_by_floor, floor_number)
+  )
+  number_of_items = random.randint(
+      0, get_weight_for_floor(max_items_by_floor, floor_number)
+  )
+
   monsters: List[Entity] = get_entities_at_random(
     enemy_chances, number_of_monsters, floor_number
   )
