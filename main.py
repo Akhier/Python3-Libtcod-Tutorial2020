@@ -4,8 +4,15 @@ import tcod
 
 import color
 import exceptions
-import input_handlers
 import setup_game
+import input_handlers
+
+
+def save_game(handler: input_handlers.BaseEventHandler, filename: str) -> None:
+  if isinstance(handler, input_handlers.EventHandler):
+    handler.engine.save_as(filename)
+    print("Game saved.")
+
 
 def main() -> None:
   screen_width = 80
@@ -44,10 +51,10 @@ def main() -> None:
     except exceptions.QuitWithoutSaving:
       raise
     except SystemExit:
-      # TODO: Add the save function here
+      save_game(handler, "savegame.sav")
       raise
     except BaseException:
-      # TODO: add the save function here
+      save_game(handler, "savegame.sav")
       raise
 
 if __name__ == "__main__":
