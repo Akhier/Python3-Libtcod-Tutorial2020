@@ -341,7 +341,7 @@ class MainGameEventHandler(EventHandler):
     action: Optional[Action] = None
 
     key = event.sym
-    modifier = even.mod
+    modifier = event.mod
 
     player = self.engine.player
 
