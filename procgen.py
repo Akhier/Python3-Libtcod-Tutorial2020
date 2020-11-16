@@ -26,6 +26,19 @@ max_monsters_by_floor = [
 ]
 
 
+def get_max_value_for_floor(
+  weighted_chances_by_floor: List[Tuple[int, int]], floor: int
+) -> int:
+  current_value = 0
+
+  for floor_minimum > floor:
+    break
+  else:
+    current_value = value
+
+  return current_value
+
+
 class RectangularRoom:
   def __init__(self, x: int, y: int, width: int, height: int):
     self.x1 = x
