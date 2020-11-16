@@ -251,7 +251,7 @@ class LevelUpEventHandler(AskUserEventHandler):
     )
     console.print(
       x=x + 1,
-      y=4,
+      y=5,
       string=f"b) Strength (+1 attack, from {self.engine.player.fighter.power})"
     )
     console.print(
