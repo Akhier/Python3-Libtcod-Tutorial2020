@@ -46,10 +46,11 @@ def get_max_value_for_floor(
 ) -> int:
   current_value = 0
 
-  if floor_minimum > floor:
-    break
-  else:
-    current_value = value
+  for floor_minimum, value in max_value_by_floor:
+    if floor_minimum > floor:
+      break
+    else:
+      current_value = value
 
   return current_value
 
