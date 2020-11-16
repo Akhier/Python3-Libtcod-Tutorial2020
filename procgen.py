@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import random
-from typing import Iterator, List, Tuple, TYPE_CHECKING
+from typing import Dict, Iterator, List, Tuple, TYPE_CHECKING
 
 import tcod
 
@@ -12,6 +12,7 @@ import tile_types
 
 if TYPE_CHECKING:
   from engine import Engine
+  from entity import Entity
 
 
 max_items_by_floor = [
@@ -24,6 +25,20 @@ max_monsters_by_floor = [
   (4, 3),
   (6, 5)
 ]
+
+item_chances: Dict[int, List[Tuple[Entity, int]]] = {
+    0: [(entity_factories.health_potion, 35)],
+    2: [(entity_factories.confusion_scroll, 10)],
+    4: [(entity_factories.lightning_scroll, 25)],
+    6: [(entity_factories.fireball_scroll, 25)],
+}
+
+enemy_chances: Dict[int, List[Tuple[Entity, int]]] = {
+    0: [(entity_factories.orc, 80)],
+    3: [(entity_factories.troll, 15)],
+    5: [(entity_factories.troll, 30)],
+    7: [(entity_factories.troll, 60)],
+}
 
 
 def get_max_value_for_floor(
