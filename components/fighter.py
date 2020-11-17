@@ -19,7 +19,6 @@ class Fighter(BaseComponent):
     self.base_defense = base_defense
     self.base_power = base_power
     self.activated = False
-    self.moved = False
 
   @property
   def hp(self) -> int:

@@ -22,7 +22,7 @@ class BaseAI(Action):
 
     for entity in self.entity.gamemap.entities:
       if entity.blocks_movement and cost[entity.x, entity.y]:
-        cost[entity.x, entity.y] = 0
+        cost[entity.x, entity.y] += 10
 
     dist = tcod.path.maxarray((self.entity.gamemap.width, self.entity.gamemap.height), dtype=np.int32)
     dist[self.entity.x, self.entity.y] = 0
