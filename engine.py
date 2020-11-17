@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import lzma
 import pickle
+import numpy as np
 from typing import TYPE_CHECKING
 
 from tcod.console import Console
 from tcod.map import compute_fov
+from tcod import path
 
 import exceptions
 from message_log import MessageLog
@@ -26,6 +28,13 @@ class Engine:
     self.player = player
 
   def handle_enemy_turns(self) -> None:
+    cost = np.array(self.game_map.tiles["walkable"], dtype=np.int8)
+
+    dist = path.maxarray((self.game_map.width, self.game_map.height), dtype=np.int32)
+
+    dist[self.player.x, self.player.y] = 0
+    path.dijkstra2d(dist, cost, 2, 3)
+    
     for entity in set(self.game_map.actors) - {self.player}:
       if entity.ai:
         try:
