@@ -28,6 +28,8 @@ class Engine:
   def handle_enemy_turns(self) -> None:
     for entity in set(self.game_map.actors) - {self.player}:
       if entity.ai:
+        if self.game_map.visible[entity.x, entity.y]:
+          entity.fighter.activated = True
         try:
           entity.ai.perform()
         except exceptions.Impossible:

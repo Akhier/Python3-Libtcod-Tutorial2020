@@ -79,7 +79,7 @@ class HostileEnemy(BaseAI):
     dy = target.y - self.entity.y
     distance = max(abs(dx), abs(dy))
 
-    if self.engine.game_map.visible[self.entity.x, self.entity.y]:
+    if self.entity.fighter.activated:
       if distance <= 1:
         return MeleeAction(self.entity, dx, dy).perform()
 
