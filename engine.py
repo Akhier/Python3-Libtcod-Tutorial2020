@@ -42,6 +42,8 @@ class Engine:
         except exceptions.Impossible:
           pass
 
+    self.game_map.dijkstra_map = None
+
   def update_fov(self) -> None:
     self.game_map.visible[:] = compute_fov(
       self.game_map.tiles["transparent"],
