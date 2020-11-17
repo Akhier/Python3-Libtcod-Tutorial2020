@@ -1,4 +1,4 @@
-for enum import auto, Enum
+from enum import auto, Enum
 
 
 class EquipmentType(Enum):
