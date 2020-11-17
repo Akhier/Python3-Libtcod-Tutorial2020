@@ -2,12 +2,10 @@ from __future__ import annotations
 
 import lzma
 import pickle
-import numpy as np
 from typing import TYPE_CHECKING
 
 from tcod.console import Console
 from tcod.map import compute_fov
-from tcod import path
 
 import exceptions
 from message_log import MessageLog
