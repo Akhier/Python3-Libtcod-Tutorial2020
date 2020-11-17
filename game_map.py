@@ -31,8 +31,6 @@ class GameMap:
 
     self.downstairs_location = (0, 0)
 
-    self.dijkstra_map = None
-
   @property
   def gamemap(self) -> GameMap:
     return self
