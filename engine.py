@@ -30,10 +30,10 @@ class Engine:
   def handle_enemy_turns(self) -> None:
     cost = np.array(self.game_map.tiles["walkable"], dtype=np.int8)
 
-    dist = path.maxarray((self.game_map.width, self.game_map.height), dtype=np.int32)
+    self.game_map.dijkstra_map = path.maxarray((self.game_map.width, self.game_map.height), dtype=np.int32)
 
-    dist[self.player.x, self.player.y] = 0
-    path.dijkstra2d(dist, cost, 2, 3)
+    self.game_map.dijkstra_map[self.player.x, self.player.y] = 0
+    path.dijkstra2d(self.game_map.dijkstra_map, cost, 2, 3)
     
     for entity in set(self.game_map.actors) - {self.player}:
       if entity.ai:
