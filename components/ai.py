@@ -22,17 +22,16 @@ class BaseAI(Action):
 
     for entity in self.entity.gamemap.entities:
       if entity.blocks_movement and cost[entity.x, entity.y]:
-        cost[entity.x, entity.y] += 10
+        cost[entity.x, entity.y] = 0
 
-    graph = tcod.path.SimpleGraph(cost=cost, cardinal=2, diagonal=3)
-    pathfinder = tcod.path.Pathfinder(graph)
+    dist = tcod.path.maxarray((self.entity.gamemap.width, self.entity.gamemap.height), dtype=np.int32)
+    dist[self.engine.player.x, self.engine.player.y] = 0
 
-    pathfinder.add_root((self.entity.x, self.entity.y))
+    tcod.path.dijkstra2d(dist, cost, 2, 3)
 
-    path: List[List[int]] = pathfinder.path_to((dest_x, dest_y))[1:].tolist()
-
-    return [(index[0], index[1]) for index in path]
-
+    path = tcod.path.hillclimb2d(dist, (self.engine.player.x, self.engine.player.y), True, True)
+    path = path[::-1].tolist()
+    return path
 
 class ConfusedEnemy(BaseAI):
   def __init__(
