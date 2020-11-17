@@ -66,7 +66,8 @@ class ItemAction(Action):
     return self.engine.game_map.get_actor_at_location(*self.target_xy)
 
   def perform(self) -> None:
-    self.item.consumable.activate(self)
+    if self.item.consumable:
+      self.item.consumable.activate(self)
 
 
 class EscapeAction(Action):
