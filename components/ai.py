@@ -25,12 +25,13 @@ class BaseAI(Action):
         cost[entity.x, entity.y] = 0
 
     dist = tcod.path.maxarray((self.entity.gamemap.width, self.entity.gamemap.height), dtype=np.int32)
-    dist[self.engine.player.x, self.engine.player.y] = 0
+    dist[self.entity.x, self.entity.y] = 0
 
     tcod.path.dijkstra2d(dist, cost, 2, 3)
 
     path = tcod.path.hillclimb2d(dist, (self.engine.player.x, self.engine.player.y), True, True)
-    path = path[::-1].tolist()
+    path = path.tolist()
+    path.pop()
     return path
 
 class ConfusedEnemy(BaseAI):
@@ -85,7 +86,7 @@ class HostileEnemy(BaseAI):
       self.path = self.get_path_to(target.x, target.y)
 
     if self.path:
-      dest_x, dest_y = self.path.pop(0)
+      dest_x, dest_y = self.path.pop()
       return MovementAction(
         self.entity, dest_x - self.entity.x, dest_y - self.entity.y
       ).perform()
