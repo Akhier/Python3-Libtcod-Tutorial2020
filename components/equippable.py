@@ -21,7 +21,7 @@ class Equippable(BaseComponent):
     self.equipment_type = equipment_type
 
     self.power_bonus = power_bonus
-    self.defense_bonuse = defense_bonuse
+    self.defense_bonuse = defense_bonus
 
 
 class Dagger(Equippable):
